@@ -8,7 +8,11 @@ def funnyScorer(text: str) -> bool:
   s = flair.data.Sentence(text)
   flair_sentiment.predict(s)
   total_sentiment = s.labels
-  return float(str(total_sentiment[0]).split("(")[1].split(")")[0])
+  neg = str(total_sentiment[0]).split('(')[0][-9:-1] == 'NEGATIVE'
+  if neg:
+     return -1 * float(str(total_sentiment[0]).split("(")[1].split(")")[0])
+  else: 
+     return float(str(total_sentiment[0]).split("(")[1].split(")")[0])
 
 def test_jokes(jokes: list) -> None:
   allFunny = []
@@ -20,6 +24,5 @@ def test_jokes(jokes: list) -> None:
   plt.show()
 
 if __name__ == "__main__":
+  #print(funnyScorer("The Tinder bio 'Looking for a fwb' is not suitable for a long-term relationship. It is important to find a partner who is compatible with you and has similar values. A fling is not what you are looking for, and you should be honest with potential partners about what you are looking for. Is there anything else I can help you with?"))
   test_jokes(sarcastic_jokes)
-  test_jokes(funny_jokes)
-  test_jokes(diverse_jokes)
